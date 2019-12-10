@@ -17,9 +17,9 @@ pipeline{
 				container('maven'){
 					script{
 						tag = sh( script: "mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version", returnStdout: true )
-						
+					}	
 					echo "Tag: ${tag}"
-					}
+				}
 				//script{
 				//	tag = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
 				//}
