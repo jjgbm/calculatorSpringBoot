@@ -2,7 +2,7 @@ pipeline{
 	agent {
         	kubernetes{
             		cloud "openshift"
-            		label "test-ace"
+            		label "maven-build"
             		yamlFile "BuildPod.yaml"
 		}
     }
