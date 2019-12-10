@@ -1,5 +1,5 @@
 pipeline{
-	agent {
+	agent { 
         	kubernetes{
             		cloud "openshift"
             		label "maven-build"
