@@ -9,20 +9,26 @@ pipeline{
 	parameters{
 		string(defaultValue: "jenkins", description: "Project/Namespace name", name: "project")
 		string(defaultValue: "172.30.1.1:5000", description: "Registry",  name:"registry")
-		string(defaultValue: "api-calculadora", description: "Image Name", name: "image")
+		string(defaultValue: "front-end-calculator", description: "Image Name", name: "image")
 	}
 	stages{
 		stage('Prepare'){
 			steps{
-				script{
-					tag = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-				}
+				container('maven'){
+					script{
+						tag = sh( script: "mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version", returnStdout: true )
+						
+					echo "Tag: ${tag}"
+					}
+				//script{
+				//	tag = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+				//}
 			}
 		}
-		stage('Build Bars'){
+		stage('Build jar'){
 			steps{
-				container('ace'){
-					sh "bash -c 'mqsipackagebar -a compiled.bar -w . -k ApiCalculadora'"
+				container('maven'){
+					sh "cd CalcExample/; mvn -B clean package"
 				}
 			}
    		}
@@ -35,7 +41,7 @@ pipeline{
 				}
 			}
 		}
-		stage('Deploy/Update'){
+		/*stage('Deploy/Update'){
 			steps{
 				container('origin'){
 					script{
@@ -62,6 +68,6 @@ pipeline{
 					}
 				}
 			}
-		}
+		}*/
 	}
 }
